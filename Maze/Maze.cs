@@ -16,13 +16,16 @@ namespace Maze
         const int SUD = 4; // en bas 0010
         const int OUEST = 8; // à gauche 0001
 
+        public Maze()
+        {
+           
+        }
 
         public bool HasWall(int x, int y, int direction)
         {
             // Vérifier si la cellule (x,y) a un mur dans la direction donnée
             return (cells[x, y] & direction) != 0;
         }
-
         public Bitmap MazeToImage(int cellSize)
         {
             // Desiner le labyrinthe
@@ -35,31 +38,32 @@ namespace Maze
                 {
                     for(int y = 0; y < Height; y++)
                     {
-                        pen.Color = Color.Black;
                         int px = x * cellSize;
                         int py = y * cellSize;
+
+                        if (HasWall(x, y, NORD))
+                            g.DrawLine(pen, px, py, px + cellSize, py);
+                        if (HasWall(x, y, SUD))
+                            g.DrawLine(pen, px, py + cellSize, px + cellSize, py + cellSize);
+                        if (HasWall(x, y, OUEST))
+                            g.DrawLine(pen, px, py, px, py + cellSize);
+                        if (HasWall(x, y, EST))
+                            g.DrawLine(pen, px + cellSize, py, px + cellSize, py + cellSize);
                     }
                 }
             }
-
-                return new Bitmap(1, 1);
+            
+            return new Bitmap(1, 1);
         }
-        public Maze(string fileName)
-        {
-            // Lire le fichier texte
-            // Parser les caractères | et ---
-            // Remplir cells[,] avec les bonnes valeurs
-            MazeToTxtFile(fileName);
-            string[] lines = File.ReadAllLines(fileName);
-            int height = lines.Count() / 2;
-            int width = (lines[0].Length) / 4;
-            cells = new int[width, height];
-        }
+        
 
         public void MazeToTxtFile(string fileName)
         {
             // Sauvegarder le labyrinthe dans un fichier texte
-            
+            string[] lines = File.ReadAllLines(fileName);
+            int height = lines.Count() / 2;
+            int width = (lines[0].Length) / 4;
+            cells = new int[width, height];
         }
     }
 }

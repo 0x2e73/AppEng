@@ -20,6 +20,8 @@ namespace Maze
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Maze maze = new Maze();
+
             using (OpenFileDialog upload = new OpenFileDialog())
             {
                 upload.Filter = "Txt Files|*.txt";
@@ -28,8 +30,8 @@ namespace Maze
                     return;
 
                 string filePath = upload.FileName;
-                
-                Maze maze = new Maze(filePath);
+
+                maze.MazeToTxtFile(filePath);
             }
         }
     }
